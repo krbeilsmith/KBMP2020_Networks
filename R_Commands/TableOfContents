@@ -1,0 +1,51 @@
+The R commands in this folder reporduce the analysis of bacterial interaction networks in Beilsmith, Perisin, & Bergelson 2020: 
+"Transient interactions and influence in endophytic bacterial networks."
+
+0_KBMP2020_BuildNetworks.R
+This file contains the commands to load the required libraries for the project, import the microbiome dataset as a phyloseq class, 
+and infer microbe interaction networks with both an inverse covariance and a correlation approach. The networks are saved as
+matrices in the AssembledNetworks folder of the project directory. Building the networks requires the files in the Dataset folder.
+
+1_KBMP2020_ImportNetworks.R
+This file contains the commands to load the networks of microbial interactions from the matrices stored in AssembledNetworks and
+to add some attributes to the edges representing the strengths and directions of the inferred interactions.
+
+2_KBMP2020_AddAttributes.R
+This file contains the commands to add additional attributes to the nodes and edges of the networks loaded with the previous
+commands. Nodes (representing ASVs) are assigned raw abundance, relative abundance, prevalence (number of samples where found), 
+and taxonomy at the level of phylum, class, order, and family based on the microbiome dataset. Edges are assigned a phylogenetic
+distance based on the branch length between the two connected ASVs in the 16S tree of the microbiome dataset. Nodes are assigned
+degree (number of edges attached) and betweenness centrality (an influence measure based on shortest paths between nodes). Nodes in
+the 90th percentile or higher for both degree and influence are categorized as putative "hub" microbes. Nodes with no edges
+attached are pruned to produce the final network graphs and colors are assigned to reflect node taxonomy and the direction of edge
+correlations in figures.
+
+3_KBMP2020_NetworkConservation.R
+These commands explore the extent to which interactions and hub ASVs are conserved between datasets from different tissues, 
+sites, and developmental stages. Results are stored in the Tables and Figures folders.
+
+4_KBMP2020_NetworkDynamics.R
+These commands explore the extent to which nodes (ASVs) change their number of interaction partners over developmental time.
+Results are stored in the Tables and Figures folders.
+
+5_KBMP2020_MakePlots.R
+These commands make plots for the root and phyllosphere networks from each site and stage and highlight various features. 
+The plots are stored in the Figures folder.
+
+6_KBMP2020_NetworkStats.R
+These commands compare the inverse covariance (Cov) and correlation (Cor) networks inferred from each dataset for the following
+properties: number of connected vertices, number of edges and proportion of edges with positive vs. negative correlations between
+ASVs, and the number of vertices (ASVs) designated as hubs. The number of edges and the number of hub vertices shared between
+networks inferred with the covariance (Cov) and correlation (Cor) approaches from the same data are reported. In addition, each
+type of network for each dataset is assessed for the fit of a power law to the degree distribution (to assess whether network is
+scale-free), the fit of a linear model to log10 clustering coefficient against log10 degree for each vertex (to assess whether network
+is hierarchical), and the fit of a linear model to the correlation absolute value vs. phylogenetic distance between the bacterial ASVs
+(to assess whether phylogenetic distance is related to interactions). Modularity is calculated and compared to modularity in random 
+graphs of the same size. The dataframe of results is stored in the Tables folder.
+
+7_KBMP2020_NetworkStructure.R
+The commands in this file generate plots that compare the degree distributions of networks from different developmental stages to 
+those of comparably-sized networks generated with the Barabasi-Albert model. They also generate a log-log plot of node clustering
+coefficients vs. degree for networks from each stage and compare these trends to the expected negative slope for a hierarchical
+network. Finally, plots of ASV prevalence and relative abundance against node properties like degree and betweenness are made.
+
